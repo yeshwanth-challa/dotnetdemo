@@ -24,17 +24,24 @@ stages:
     steps:
     - script: dotnet build --configuration $(buildConfiguration)
       displayName: 'dotnet build $(buildConfiguration)'
-
+  
     - script: dotnet publish -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
       displayName: Publish Project 
+  
+    - task: Npm@1
+      displayName: Test UI
+      inputs:
+        command: 'custom'
+        workingDir: 'ClientApp'
+        customCommand: 'run test --watch=false'
 
-    
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-  
+
+
     # - task: DotNetCoreCLI@2
     #   displayName: Publish Projects
     #   inputs:

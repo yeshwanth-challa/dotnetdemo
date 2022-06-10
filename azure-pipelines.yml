@@ -25,14 +25,14 @@ stages:
     - script: dotnet build --configuration $(buildConfiguration)
       displayName: 'dotnet build $(buildConfiguration)'
 
-    - script: dotnet publish -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
+    - script: dotnet publish -f net6.0 -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
       displayName: Publish Project 
 
-    - task: Npm@1  
-      inputs:
-        command: 'custom'
-        workingDir: 'ClientApp'
-        customCommand: 'run test'
+    # - task: Npm@1  
+    #   inputs:
+    #     command: 'custom'
+    #     workingDir: 'ClientApp'
+    #     customCommand: 'run test'
     
     - task: PublishBuildArtifacts@1
       inputs:

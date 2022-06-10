@@ -28,6 +28,11 @@ stages:
     - script: dotnet publish -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
       displayName: Publish Project 
 
+    - task: Npm@1  
+      inputs:
+        command: 'custom'
+        workingDir: 'ClientApp'
+        customCommand: 'run test'
     
     - task: PublishBuildArtifacts@1
       inputs:

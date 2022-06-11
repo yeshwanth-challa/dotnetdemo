@@ -48,7 +48,3 @@ stages:
     #     publishWebProjects: true
     #     arguments: '--configuration $(buildConfiguration) -f $(dotNetFramework) --runtime $(targetRuntime) --self-contained -o $(Build.ArtifactStagingDirectory)'
     #     zipAfterPublish: true
-  
-      # Test project
-    # - script: dotnet test
-    #   displayName: Test Project

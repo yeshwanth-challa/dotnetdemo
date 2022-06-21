@@ -5,7 +5,7 @@ trigger:
 - bugfix/*
 
 pool:
-  name: 'batch6'
+  name: 'demo'
   demands: docker
 
 variables:

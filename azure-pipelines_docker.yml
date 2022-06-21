@@ -5,10 +5,11 @@ trigger:
 - bugfix/*
 
 pool:
-  name: 'batch6'
+  name: 'demo'
+  demands: docker
 
 variables:
-  repository: 'walmartpayment'
+  repository: 'azacrshared'
 
 stages:
 - stage: 'Build'

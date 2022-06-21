@@ -1,0 +1,23 @@
+trigger:
+- main
+- develop
+- feature/*
+- bugfix/*
+
+pool:
+  name: 'batch6'
+
+variables:
+  repository: 'walmartpayment'
+
+stages:
+- stage: 'Build'
+  jobs:
+  - job: 'DockerBuild'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker'
+        repository: '$(repository)'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'

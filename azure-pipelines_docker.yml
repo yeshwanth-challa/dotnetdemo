@@ -6,9 +6,10 @@ trigger:
 
 pool:
   name: 'batch6'
+  demands: docker
 
 variables:
-  repository: 'walmartpayment'
+  repository: 'azacrshared'
 
 stages:
 - stage: 'Build'

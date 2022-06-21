@@ -22,7 +22,7 @@ stages:
   jobs:
   - job: 'Build'
     steps:
-    - script: dotnet build --configuration $(buildConfiguration)
+    - script: docker build -t api:1.0.0
       displayName: 'dotnet build $(buildConfiguration)'
 
     - script: dotnet publish -f $(dotNetFramework) -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)

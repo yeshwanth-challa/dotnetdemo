@@ -22,3 +22,6 @@ stages:
         repository: '$(repository)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
+        tags: |
+         latest
+         $(Build.BuildNumber)

@@ -9,7 +9,7 @@ pool:
   demands: docker
 
 variables:
-  repository: 'azacrshared'
+  repository: 'walmartpayment'
 
 stages:
 - stage: 'Build'
@@ -18,7 +18,7 @@ stages:
     steps:
     - task: Docker@2
       inputs:
-        containerRegistry: 'Docker'
+        containerRegistry: 'ACRDocker'
         repository: '$(repository)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'

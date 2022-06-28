@@ -21,11 +21,11 @@ stages:
   jobs:
   - job: 'Build'
     steps:
-    - script: dotnet build --configuration $(buildConfiguration)
-      displayName: 'dotnet build $(buildConfiguration)'
+    # - script: dotnet build --configuration $(buildConfiguration)
+    #   displayName: 'dotnet build $(buildConfiguration)'
 
-    - script: dotnet publish -f $(dotNetFramework) -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
-      displayName: Publish Project 
+    # - script: dotnet publish -f $(dotNetFramework) -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
+    #   displayName: Publish Project 
 
     # - task: Npm@1
     #   displayName: 'Client Tests'
@@ -34,18 +34,18 @@ stages:
     #     workingDir: 'ClientApp'
     #     customCommand: 'run test'
     
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
 
-      # - task: Docker@2
-      #   inputs:
-      #     containerRegistry: 'ACRDocker'
-      #     repository: '$(repository)'
-      #     command: 'buildAndPush'
-      #     Dockerfile: '**/Dockerfile'
-      #     tags: |         
-      #       $(Build.BuildNumber)
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'ACRDocker'
+          repository: '$(repository)'
+          command: 'buildAndPush'
+          Dockerfile: '**/Dockerfile'
+          tags: |         
+            $(Build.BuildNumber)
   

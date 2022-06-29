@@ -40,12 +40,37 @@ stages:
     #     ArtifactName: 'drop'
     #     publishLocation: 'Container'
 
-      - task: Docker@2
+      # - task: Docker@2
+      #   inputs:
+      #     containerRegistry: 'ACRDocker'
+      #     repository: '$(repository)'
+      #     command: 'buildAndPush'
+      #     Dockerfile: '**/Dockerfile'
+      #     tags: |         
+      #       $(Build.BuildNumber)
+      - task: Bash@3
         inputs:
-          containerRegistry: 'ACRDocker'
-          repository: '$(repository)'
-          command: 'buildAndPush'
-          Dockerfile: '**/Dockerfile'
-          tags: |         
-            $(Build.BuildNumber)
+          targetType: inline
+          script: 'echo hello world'
+
+- stage: 'Deploy'
+  jobs:
+  - deployment: ""
+    displayName: Deploy to AKS
+ 
+    environment: 'Dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+          
+            - task: KubernetesManifest@0
+              displayName: Deploy
+              inputs:
+                action: deploy
+                namespace: walmart
+                manifests: deployment-azure.yaml
+                containers: |
+                  docker.io/raghukom/dotnet6:1.0.0
   

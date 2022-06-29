@@ -7,7 +7,7 @@ metadata:
   namespace: default
 spec:
   rules:
-  - host: bermtec.com
+  - host: amazon.com
     http:
       paths:
       - path: /
@@ -15,5 +15,12 @@ spec:
         backend:
           service:
             name: walmartpaymentservice
+            port:
+              number: 80
+      - path: /gift-cards
+        pathType: Prefix
+        backend:
+          service:
+            name: giftcardservice
             port:
               number: 80

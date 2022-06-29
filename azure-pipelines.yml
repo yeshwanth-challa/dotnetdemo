@@ -68,6 +68,7 @@ stages:
             - task: KubernetesManifest@0
               displayName: Deploy
               inputs:
+                kubernetesServiceConnection: 'k8swalmart'
                 action: deploy
                 namespace: walmart
                 manifests: deployment-azure.yaml

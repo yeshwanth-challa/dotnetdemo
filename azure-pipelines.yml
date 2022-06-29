@@ -74,4 +74,5 @@ stages:
                 manifests: deployment-azure.yaml
                 containers: |
                   docker.io/raghukom/dotnet6:1.0.0
+                arguments: '-n=walmart'
   

@@ -59,6 +59,7 @@ stages:
            - task: KubernetesManifest@0
              displayName: Create imagePullSecret
              inputs:
+                kubernetesServiceConnection: $(k8sconnection)
                 action: createSecret
                 secretName: $(imagePullSecret)
                 namespace: $(namespace)
@@ -71,8 +72,8 @@ stages:
               action: deploy
               namespace: $(namespace)
               manifests: |
-                $(System.ArtifactsDirectory)/manifests/deployment.yml
-                $(System.ArtifactsDirectory)/manifests/service.yml
+                $(System.ArtifactsDirectory)/manifests/deployment.yaml
+                $(System.ArtifactsDirectory)/manifests/service.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               arguments: '-n=walmartdev'

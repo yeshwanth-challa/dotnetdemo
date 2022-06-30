@@ -17,6 +17,7 @@ variables:
   repository: 'walmartpayment'
   namespace: 'walmartdev'
   k8sconnection: 'kubewalmartdev'
+  imagePullSecret: 'test'
 
 stages:
 - stage: 'Build'
@@ -32,9 +33,15 @@ stages:
           tags: |         
             $(Build.BuildNumber)
 
+      - task: PublishPipelineArtifact@1
+        inputs:
+          artifactName: 'manifests'
+          path: 'manifests'
+
 - stage: 'Deploy'
+  displayName: 'Deployment to Dev'
   jobs:
-  - deployment: "Dev"
+  - deployment: Deploy
     displayName: Deploy to AKS
     pool:
       name: 'Demo'   
@@ -43,13 +50,30 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: self          
-          - task: KubernetesManifest@0
-            displayName: Deploy
-            inputs:
+           - task: DownloadPipelineArtifact@2
+             displayName: 'Download Manifests'
+             inputs:
+                artifactName: 'manifests'
+                downloadPath: '$(System.ArtifactsDirectory)/manifests'
+
+           - task: KubernetesManifest@0
+             displayName: Create imagePullSecret
+             inputs:
+                action: createSecret
+                secretName: $(imagePullSecret)
+                namespace: $(namespace)
+                dockerRegistryEndpoint: 'ACRDocker'
+              
+           - task: KubernetesManifest@0
+             displayName: Deploy
+             inputs:
               kubernetesServiceConnection: $(k8sconnection)
               action: deploy
               namespace: $(namespace)
-              manifests: manifests/deployment.yaml|manifests/Service.yaml
+              manifests: |
+                $(System.ArtifactsDirectory)/manifests/deployment.yml
+                $(System.ArtifactsDirectory)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
               arguments: '-n=walmartdev'
   

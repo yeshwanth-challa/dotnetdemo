@@ -21,25 +21,6 @@ stages:
   jobs:
   - job: 'Build'
     steps:
-    # - script: dotnet build --configuration $(buildConfiguration)
-    #   displayName: 'dotnet build $(buildConfiguration)'
-
-    # - script: dotnet publish -f $(dotNetFramework) -c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)
-    #   displayName: Publish Project 
-
-    # - task: Npm@1
-    #   displayName: 'Client Tests'
-    #   inputs:
-    #     command: 'custom'
-    #     workingDir: 'ClientApp'
-    #     customCommand: 'run test'
-    
-    # - task: PublishBuildArtifacts@1
-    #   inputs:
-    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    #     ArtifactName: 'drop'
-    #     publishLocation: 'Container'
-
       - task: Docker@2
         inputs:
           containerRegistry: 'ACRDocker'
@@ -63,16 +44,13 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: self
-              
+          - checkout: self          
           - task: KubernetesManifest@0
             displayName: Deploy
             inputs:
-              kubernetesServiceConnection: 'kubewalmartdev'
+              kubernetesServiceConnection: $(k8sconnection)
               action: deploy
-              namespace: 'walmartdev'
-              manifests: manifests/deployment-azure.yaml
-              containers: |
-                azacrshared.azurecr.io/$(repository):$(Build.BuildNumber)
+              namespace: $(namespace)
+              manifests: manifests/deployment.yaml|manifests/service.yaml
               arguments: '-n=walmartdev'
   

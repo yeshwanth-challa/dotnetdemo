@@ -50,6 +50,6 @@ stages:
               kubernetesServiceConnection: $(k8sconnection)
               action: deploy
               namespace: $(namespace)
-              manifests: manifests/deployment.yaml|manifests/service.yaml
+              manifests: manifests/deployment.yaml|manifests/Service.yaml
               arguments: '-n=walmartdev'
   

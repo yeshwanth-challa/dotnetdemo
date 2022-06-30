@@ -68,7 +68,7 @@ stages:
           - task: KubernetesManifest@0
             displayName: Deploy
             inputs:
-              kubernetesServiceConnection: '$(k8sconnection)'
+              kubernetesServiceConnection: $(k8sconnection)
               action: deploy
               namespace: $(namespace)
               manifests: manifests/deployment-azure.yaml

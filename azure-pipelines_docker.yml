@@ -23,3 +23,26 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |         
          $(Build.BuildNumber)
+
+- stage: 'Deploy'
+  jobs:
+  - deployment: ""
+    displayName: Deploy to AKS
+ 
+    environment: 'Dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+          
+            - task: KubernetesManifest@0
+              displayName: Deploy
+              inputs:
+                kubernetesServiceConnection: 'k8swalmart'
+                action: deploy
+                namespace: walmart
+                manifests: deployment-azure.yaml
+                containers: |
+                  azacrshared.azurecr.io/walmartpayment:$(Build.BuildNumber)
+                arguments: '-n=walmart'

@@ -49,27 +49,30 @@ stages:
           tags: |         
             $(Build.BuildNumber)
 
-
 - stage: 'Deploy'
   jobs:
-  - deployment: ""
+  - deployment: "Dev"
     displayName: Deploy to AKS
- 
+    pool:
+      name: 'Demo'
+    variables: 
+      namespace: 'walmartdev'
+      k8sconnection: 'kubewalmartdev'
     environment: 'Dev'
     strategy:
       runOnce:
         deploy:
           steps:
-            - checkout: self
-          
-            - task: KubernetesManifest@0
-              displayName: Deploy
-              inputs:
-                kubernetesServiceConnection: 'k8swalmart'
-                action: deploy
-                namespace: walmart
-                manifests: deployment-azure.yaml
-                containers: |
-                  azacrshared.azurecr.io/walmartpayment:$(Build.BuildNumber)
-                arguments: '-n=walmart'
+          - checkout: self
+              
+          - task: KubernetesManifest@0
+            displayName: Deploy
+            inputs:
+              kubernetesServiceConnection: '$(k8sconnection)'
+              action: deploy
+              namespace: $(namespace)
+              manifests: manifests/deployment-azure.yaml
+              containers: |
+                azacrshared.azurecr.io/$(repository):$(Build.BuildNumber)
+              arguments: '-n=walmartdev'
   

@@ -70,7 +70,7 @@ stages:
             inputs:
               kubernetesServiceConnection: 'kubewalmartdev'
               action: deploy
-              namespace: $(namespace)
+              namespace: 'walmartdev'
               manifests: manifests/deployment-azure.yaml
               containers: |
                 azacrshared.azurecr.io/$(repository):$(Build.BuildNumber)

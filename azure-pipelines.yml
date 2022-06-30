@@ -30,7 +30,8 @@ stages:
           repository: '$(repository)'
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
-          tags: |         
+          tags: |
+            latest      
             $(Build.BuildNumber)
 
       - task: PublishPipelineArtifact@1

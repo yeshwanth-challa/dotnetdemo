@@ -75,6 +75,7 @@ stages:
               manifests: |
                 $(System.ArtifactsDirectory)/manifests/deployment.yaml
                 $(System.ArtifactsDirectory)/manifests/Service.yaml
+                $(System.ArtifactsDirectory)/manifests/Ingress.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               arguments: '-n=walmartdev'

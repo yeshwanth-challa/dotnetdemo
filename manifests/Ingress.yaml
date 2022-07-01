@@ -4,10 +4,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: IngressName
-  namespace: default
+  namespace: walmartdev
 spec:
   rules:
-  - host: amazon.com
+  - host: bermtec.com
     http:
       paths:
       - path: /
@@ -15,12 +15,5 @@ spec:
         backend:
           service:
             name: walmartpaymentservice
-            port:
-              number: 80
-      - path: /gift-cards
-        pathType: Prefix
-        backend:
-          service:
-            name: giftcardservice
             port:
               number: 80

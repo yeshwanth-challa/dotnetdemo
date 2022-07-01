@@ -55,5 +55,5 @@ spec:
         ports:
         - containerPort:  80
           name:  walmartdev
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
       restartPolicy: Always

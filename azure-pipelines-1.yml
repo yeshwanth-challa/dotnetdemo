@@ -1,7 +1,6 @@
 trigger:
 - develop
 - bugfix/*
-- feature/*
 
 pool:
   vmImage: ubuntu-latest

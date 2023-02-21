@@ -14,7 +14,7 @@ variables:
   imagePullSecret: test
   k8sNamespace: walmartdev
   containerRegistry: bermtec
-  k8sconnection: bermtecaks1
+  k8sconnection: bermtecsharedaks-test-walmartdev
 
 pool:
   vmImage: ubuntu-latest

@@ -43,7 +43,7 @@ stages:
         path: 'manifests'
 
 - stage: DeployToDev
-  displayName: Deploy stage
+  displayName: Deploy Dev
   dependsOn: Build
   jobs:
   - deployment: Deploy
@@ -83,9 +83,9 @@ stages:
               kubernetesServiceConnection: $(k8sconnection)
 
 - stage: DeployToProd
-  condition:  eq(variables['Build.SourceBranch'], 'refs/heads/master')
-  displayName: Deploy stage
-  dependsOn: Build
+  condition:  eq(variables['Build.SourceBranch'], 'refs/heads/develop')
+  displayName: Deploy Prod
+  dependsOn: DeployToStage
   jobs:
   - deployment: Deploy
     displayName: Deploy job

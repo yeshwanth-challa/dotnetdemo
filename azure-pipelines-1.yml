@@ -13,7 +13,7 @@ variables:
   tag: latest
   imagePullSecret: test
   k8sNamespace: walmartdev
-  containerRegistry: bermtec
+  containerRegistry: bermtecacrshared.azurecr.io
   k8sconnection: bermtecakstest
 
 pool:

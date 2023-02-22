@@ -9,12 +9,12 @@ variables:
   bahdbabv: ubuntu-latest
   imageRepository: bermtecpayment
   dockerfilePath : '**/Dockerfile'
-  dockerRegistryServiceConnection: bermtecdockerregistry
+  dockerRegistryServiceConnection: bermtecacrshared
   tag: latest
-  imagePullSecret: test
+  imagePullSecret: test-secret
   k8sNamespace: walmartdev
   containerRegistry: bermtec
-  k8sconnection: bermtecsharedaks-test-walmartdev
+  k8sconnection: bermtecakstest
 
 pool:
   vmImage: ubuntu-latest
@@ -42,42 +42,42 @@ stages:
         artifactName: 'manifests'
         path: 'manifests'
 
-# - stage: Deploy
-#   displayName: Deploy stage
-#   dependsOn: Build
-#   jobs:
-#   - deployment: Deploy
-#     displayName: Deploy job
-#     environment: 'dev' #customize with your environment
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: DownloadPipelineArtifact@2
-#             inputs:
-#               artifactName: 'manifests'
-#               downloadPath: '$(System.ArtifactsDirectory)/manifests'
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy job
+    environment: 'dev' #customize with your environment
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifactName: 'manifests'
+              downloadPath: '$(System.ArtifactsDirectory)/manifests'
 
-#           - task: KubernetesManifest@0
-#             displayName: Create imagePullSecret
-#             inputs:
-#               action: createSecret
-#               secretName: $(imagePullSecret)
-#               namespace: $(k8sNamespace)
-#               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-#               kubernetesServiceConnection: $(k8sconnection)
+          # - task: KubernetesManifest@0
+          #   displayName: Create imagePullSecret
+          #   inputs:
+          #     action: createSecret
+          #     secretName: $(imagePullSecret)
+          #     namespace: $(k8sNamespace)
+          #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+          #     kubernetesServiceConnection: $(k8sconnection)
 
-#           - task: KubernetesManifest@0
-#             displayName: Deploy to Kubernetes cluster
-#             inputs:
-#               action: deploy
-#               namespace: $(k8sNamespace)
-#               manifests: |
-#                 $(System.ArtifactsDirectory)/manifests/deployment.yml
-#                 $(System.ArtifactsDirectory)/manifests/Service.yml
-#               imagePullSecrets: |
-#                 $(imagePullSecret)
-#               containers: |
-#                 $(containerRegistry)/$(imageRepository):$(tag)
-#               kubernetesServiceConnection: $(k8sconnection)
-#               arguments: '-n=walmartdev'
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              namespace: $(k8sNamespace)
+              manifests: |
+                $(System.ArtifactsDirectory)/manifests/deployment.yml
+                $(System.ArtifactsDirectory)/manifests/Service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
+              kubernetesServiceConnection: $(k8sconnection)
+              arguments: '-n=walmartdev'

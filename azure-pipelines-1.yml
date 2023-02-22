@@ -42,13 +42,13 @@ stages:
         artifactName: 'manifests'
         path: 'manifests'
 
-- stage: Deploy
+- stage: DeployToDev
   displayName: Deploy stage
   dependsOn: Build
   jobs:
   - deployment: Deploy
     displayName: Deploy job
-    environment: 'dev' #customize with your environment
+    environment: 'walmartpayment-dev'
     strategy:
       runOnce:
         deploy:
@@ -75,9 +75,9 @@ stages:
               manifests: |
                 $(System.ArtifactsDirectory)/manifests/deployment.yaml
                 $(System.ArtifactsDirectory)/manifests/Service.yaml
+                $(System.ArtifactsDirectory)/manifests/secrets.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(Build.BuildNumber)
               kubernetesServiceConnection: $(k8sconnection)
-              arguments: '-n=walmartdev'

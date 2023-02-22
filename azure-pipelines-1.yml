@@ -11,7 +11,7 @@ variables:
   dockerfilePath : '**/Dockerfile'
   dockerRegistryServiceConnection: bermtecacrshared
   tag: latest
-  imagePullSecret: test-secret
+  imagePullSecret: test
   k8sNamespace: walmartdev
   containerRegistry: bermtec
   k8sconnection: bermtecakstest
@@ -58,14 +58,14 @@ stages:
               artifactName: 'manifests'
               downloadPath: '$(System.ArtifactsDirectory)/manifests'
 
-          # - task: KubernetesManifest@0
-          #   displayName: Create imagePullSecret
-          #   inputs:
-          #     action: createSecret
-          #     secretName: $(imagePullSecret)
-          #     namespace: $(k8sNamespace)
-          #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-          #     kubernetesServiceConnection: $(k8sconnection)
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              namespace: $(k8sNamespace)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              kubernetesServiceConnection: $(k8sconnection)
 
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
@@ -73,8 +73,8 @@ stages:
               action: deploy
               namespace: $(k8sNamespace)
               manifests: |
-                $(System.ArtifactsDirectory)/manifests/deployment.yml
-                $(System.ArtifactsDirectory)/manifests/Service.yml
+                $(System.ArtifactsDirectory)/manifests/deployment.yaml
+                $(System.ArtifactsDirectory)/manifests/Service.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |

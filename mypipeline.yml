@@ -3,14 +3,6 @@ trigger:
 
 pool:
   vmImage: ‘ubuntu-latest'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
 
 variables:
   buildConfiguration: 'Release'
